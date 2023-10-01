@@ -18,6 +18,7 @@ import { useForm } from "react-hook-form"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import FileUploadComponent from "@/components/ui/fileUpload"
 import { FileWithPath } from "react-dropzone"
+import { Checkbox } from "@/components/ui/checkbox"
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -80,6 +81,13 @@ const uploadTerms = [
     "If your file is password protected, we request you to remove the password and upload the file to avoid submission failure",
     "In case if you are facing any issue while uploading bank statements, Please contact us on support@credilinq.ai",
 ];
+
+const termsConditions = [
+    "I confirm that I am the authorized person to upload bank statements on behalf of my company",
+    "I assure you that uploaded bank statements and provided company information match and are of the same company, if there is a mismatch then my report will not be generated",
+    "I understand that this is a general report based on the bank statements and Credilinq is not providing a solution or guiding me for my business growth",
+    "I have read and understand the __terms_and_conditions__",
+]
 
 export function ProfileForm() {
     const form = useForm<z.infer<typeof formSchema>>({
@@ -279,6 +287,69 @@ export function ProfileForm() {
                         </div>
                         </div>
                     ))}
+                </div>
+            </CardContent>
+        </Card>
+        <Card>
+            <CardHeader>
+                <CardTitle>Terms & Conditions</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col md:flex-row w-full justify-around items-center space-y-4 md:space-x-4 md:space-y-0">
+                <div className="flex flex-col w-full md:w-auto mx-5 space-x-2 space-y-5">
+                    <div className="flex flex-row space-x-2">
+                        <Checkbox id="terms1" />
+                        <div className="grid gap-1.5 leading-none">
+                            <label
+                            htmlFor="terms1"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            >
+                                Accept terms and conditions
+                            </label>
+                            <p className="text-sm text-muted-foreground">
+                                By ticking, you are confirming that you have understood and are agreeing to the details mentioned:
+                            </p>
+                        </div>
+                    </div>
+                    <div className="w-full md:w-auto">
+                        {termsConditions.map((terms, index) => (
+                            <div
+                            key={index}
+                            className="mb-2 grid grid-cols-[25px_1fr] items-start pb-4 last:mb-0 last:pb-0 space-x-5"
+                            >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="1em"
+                                height="1em"
+                                viewBox="0 0 24 24"
+                                className="mx-auto text-2xl rounded-full bg-opacity-12"
+                            >
+                                <path d="M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"></path>
+                            </svg>
+                            <div className="space-y-1">
+                                <p className="text-xs font-extralight leading-7 tracking-wide">
+                                {terms.includes("__terms_and_conditions__") ? (
+                                    terms.split("__terms_and_conditions__").map((text, subIndex) => (
+                                        subIndex === 0 ? (
+                                            <span key={subIndex}>{text}</span>
+                                        ) : (
+                                            <a
+                                                key={subIndex}
+                                                href="https://smehealthcheck.credilinq.ai/terms-and-conditions"
+                                                style={{ color: "rgb(96, 26, 121)" }}
+                                                target="_blank"
+                                            >
+                                                Terms & Conditions
+                                            </a>
+                                        )
+                                    ))
+                                ) : (
+                                    terms
+                                )}
+                                </p>
+                            </div>
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </CardContent>
         </Card>
