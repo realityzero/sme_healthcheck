@@ -105,7 +105,7 @@ export function ProfileForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 mb-5">
         <Card>
             <CardHeader>
                 <CardTitle>Company Information</CardTitle>
@@ -354,7 +354,9 @@ export function ProfileForm() {
             </CardContent>
         </Card>
 
-        <Button type="submit">Submit</Button>
+        <div className="flex ml-auto">
+            <Button type="submit" className="ml-auto">Submit</Button>
+        </div>
       </form>
     </Form>
   )
