@@ -20,6 +20,8 @@ import FileUploadComponent from "@/components/ui/fileUpload"
 import { FileWithPath } from "react-dropzone"
 import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
+import { PutBlobResult } from "@vercel/blob"
+import UploadedFilesList from "@/components/ui/uploadedFilesList"
 
 const formSchema = z.object({
   company_uen: z.string().refine((value) => {
@@ -105,21 +107,43 @@ export function ProfileForm() {
         console.log('handleAcceptanceChange', e.target.checked);
         setAccepted(e.target.checked);
     };
+    const [blob, setBlob] = useState<PutBlobResult[]>([]);
 
-    const handleFileUpload = (uploadedFiles: FileWithPath[]) => {
+    const handleFileUpload = async (uploadedFiles: FileWithPath[]) => {
         // Handle the uploaded PDF files, e.g., send them to a server or process them.
         console.log('Uploaded Files:', uploadedFiles);
         const fileNames = uploadedFiles.map((file) => file.name);
-    
         // Update the form values with the array of file names
         form.setValue("uploadedFiles", fileNames);
+        const newBlobs = [];
+
+        for (const uploadedFile of uploadedFiles) {
+            const response = await fetch(
+              `/api/upload?filename=${uploadedFile.name}`,
+              {
+                method: 'POST',
+                body: uploadedFile,
+              },
+            );
+
+            if (response.ok) {
+                const newBlob = (await response.json()) as PutBlobResult;
+                newBlobs.push(newBlob);
+            } else {
+                console.error('File upload failed');
+            }
+
+        }
+    
+        setBlob(newBlobs);
+        console.log(`Blob response: ${JSON.stringify(blob)}`);
     };
     
     function onSubmit(form: z.infer<typeof formSchema>) {
     // function onSubmit(event) {
         // Do something with the form values.
         // This will be type-safe and validated.
-        
+
         // console.log(form);
         // event.preventDefault();
         // const values = form.getValues(); // Get the form values
@@ -273,6 +297,15 @@ export function ProfileForm() {
                         {form.formState.errors.uploadedFiles.message}
                         </FormMessage>
                     )}
+
+                    {blob.length > 0 && (
+                        <UploadedFilesList
+                        files={blob.map((b) => ({
+                            name: b.pathname,
+                            url: b.url,
+                        }))}
+                        />
+                    )}
                 </div>
 
 
@@ -333,42 +366,35 @@ export function ProfileForm() {
             </CardHeader>
             <CardContent className="flex flex-col md:flex-row w-full justify-around items-center space-y-4 md:space-x-4 md:space-y-0">
                 <div className="flex flex-col w-full md:w-auto mx-5 space-x-2 space-y-5">
-                    <div className="flex flex-row space-x-2">
                         <FormField
                             control={form.control}
                             name="terms_accept"
                             render={({ field }) => (
                                 <FormItem>
-
-                                    <FormControl>
-                                        <Checkbox checked={field.value} onCheckedChange={field.onChange} />
-                                        {/* <Checkbox checked={field.value} onCheckedChange={(checked) => {
-                                            console.log("checked:",checked);
-                                            setAccepted(checked as boolean);
-                                            console.log("accepted:",accepted);
-                                            return checked;
-                                        }} /> */}
-                                    </FormControl>
-                                        {form.formState.errors.terms_accept && (
-                                            <FormMessage >
-                                            {form.formState.errors.terms_accept.message}
-                                            </FormMessage>
-                                        )}
-                                    <div className="grid gap-1.5 leading-none">
-                                        <label
-                                        htmlFor="terms1"
-                                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                        >
-                                            Accept terms and conditions
-                                        </label>
-                                        <p className="text-sm text-muted-foreground">
-                                            By ticking, you are confirming that you have understood and are agreeing to the details mentioned:
-                                        </p>
+                                    <div className="flex flex-row space-x-2">
+                                        <FormControl>
+                                            <Checkbox id="terms1" checked={field.value} onCheckedChange={field.onChange} />
+                                        </FormControl>
+                                            {form.formState.errors.terms_accept && (
+                                                <FormMessage >
+                                                {form.formState.errors.terms_accept.message}
+                                                </FormMessage>
+                                            )}
+                                        <div className="grid gap-1.5 leading-none">
+                                            <label
+                                            htmlFor="terms1"
+                                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                            >
+                                                Accept terms and conditions
+                                            </label>
+                                            <p className="text-sm text-muted-foreground">
+                                                By ticking, you are confirming that you have understood and are agreeing to the details mentioned:
+                                            </p>
+                                        </div>
                                     </div>
                                 </FormItem>
                             )}
                         />
-                    </div>
                     <div className="w-full md:w-auto">
                         {termsConditions.map((terms, index) => (
                             <div
