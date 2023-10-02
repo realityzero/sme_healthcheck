@@ -136,11 +136,9 @@ export function ProfileForm() {
         }
     
         setBlob(newBlobs);
-        console.log(`Blob response: ${JSON.stringify(blob)}`);
     };
     
     function onSubmit(form: z.infer<typeof formSchema>) {
-    // function onSubmit(event) {
         // Do something with the form values.
         // This will be type-safe and validated.
 
