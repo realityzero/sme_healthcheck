@@ -100,13 +100,8 @@ export function ProfileForm() {
         resolver: zodResolver(formSchema),
         defaultValues: {
         },
-      });
+    });
 
-    const [accepted, setAccepted] = useState(false);
-    const handleAcceptanceChange = (e) => {
-        console.log('handleAcceptanceChange', e.target.checked);
-        setAccepted(e.target.checked);
-    };
     const [blob, setBlob] = useState<PutBlobResult[]>([]);
 
     const handleFileUpload = async (uploadedFiles: FileWithPath[]) => {
