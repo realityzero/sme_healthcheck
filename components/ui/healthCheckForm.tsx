@@ -152,7 +152,7 @@ export function ProfileForm() {
         try {
             console.log('Form submitting:', form);
             // Send a POST request to the specified endpoint
-            const response = await fetch('https://credilinq-backend.onrender.com/api/smehealthchecks', {
+            const response = await fetch('https://credilinq-backend.onrender.com/smehealthchecks', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
