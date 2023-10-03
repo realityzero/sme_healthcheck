@@ -133,21 +133,43 @@ export function ProfileForm() {
         setBlob(newBlobs);
     };
     
-    function onSubmit(form: z.infer<typeof formSchema>) {
-        // Do something with the form values.
-        // This will be type-safe and validated.
+    async function onSubmit(form: z.infer<typeof formSchema>) {
+        // Form values will be type-safe and validated.
 
-        // console.log(form);
-        // event.preventDefault();
-        // const values = form.getValues(); // Get the form values
+        let requestBody = {
+            company_uen: form.company_uen,
+            company_name: form.company_name,
+            full_name: form.full_name,
+            position_within_company: form.position_within_company,
+            email: form.email,
+            phone: form.mobile_number,
+            documents: blob.map((file) => ({
+              file_name: file.pathname,
+              path: file.url,
+            })),
+          };
         try {
-            // Your validation logic
-            // formSchema.parse(values);
-            console.log('Form submitted:', form);
-        } catch (error) {
-            // Handle validation errors
-            console.error('Validation error:', error);
-        }
+            console.log('Form submitting:', form);
+            // Send a POST request to the specified endpoint
+            const response = await fetch('https://credilinq-backend.onrender.com/api/smehealthchecks', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(requestBody),
+            });
+        
+            if (response.ok) {
+              // Request was successful, handle the response as needed
+              const responseData = await response.json();
+              console.log('Request was successful. Response:', responseData);
+            } else {
+              console.error('Request failed with status:', response.status);
+            }
+          } catch (error) {
+            // network errors or other exceptions
+            console.error('Request failed with error:', error);
+          }
     }
 
   return (
