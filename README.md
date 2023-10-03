@@ -1,5 +1,14 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+## Notes from Author
+- SME Healthcheck frontend is deployed using Vercel. It doesn't require a ```dockerfile``` to ship it.
+- UI flow is tested for a happy path. There will be some bugs available.
+- File upload is automatically done at [Vercel Blob storage](https://vercel.com/docs/storage/vercel-blob)
+- Refer ```.env.example``` file for example env variables
+
+## Live Link
+https://sme-healthcheck.vercel.app/
+
 ## Getting Started
 
 First, run the development server:
