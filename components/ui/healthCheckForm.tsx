@@ -22,7 +22,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 import { useState } from "react"
 import { PutBlobResult } from "@vercel/blob"
 import UploadedFilesList from "@/components/ui/uploadedFilesList"
-import { toast } from "@/components/ui/use-toast"
+import { useToast } from "@/components/ui/use-toast"
 
 const formSchema = z.object({
   company_uen: z.string().refine((value) => {
@@ -103,6 +103,8 @@ export function ProfileForm() {
         },
     });
 
+    const { toast } = useToast()
+
     const [blob, setBlob] = useState<PutBlobResult[]>([]);
 
     const handleFileUpload = async (uploadedFiles: FileWithPath[]) => {
@@ -176,8 +178,13 @@ export function ProfileForm() {
                 description: "There was a problem with your request.",
               });
             }
-          } catch (error) {
+        } catch (error) {
             // network errors or other exceptions
+            toast({
+              variant: "destructive",
+              title: "Uh oh! Something went wrong.",
+              description: "There was a problem with your request.",
+            });
             console.error('Request failed with error:', error);
           }
     }
