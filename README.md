@@ -1,5 +1,12 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and uses [shadcn/ui components](https://ui.shadcn.com/)
 
+SME Healthcheck is a data collection form.
+
+## Lighthouse Summary
+<p align="center">
+  <a href="lighthouse_reports/" target="blank"><img src="lighthouse_reports/lighthouse_summary.png" width="100%" alt="Lighthouse Summary Report" /></a>
+</p>
+
 ## Notes from Author
 - SME Healthcheck frontend is deployed using Vercel. It doesn't require a ```dockerfile``` to ship it.
 - UI flow is tested for a happy path. There will be some bugs available.
