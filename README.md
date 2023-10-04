@@ -5,6 +5,10 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - UI flow is tested for a happy path. There will be some bugs available.
 - File upload is automatically done at [Vercel Blob storage](https://vercel.com/docs/storage/vercel-blob)
 - Refer ```.env.example``` file for example env variables
+- UEN is a 9-10 digit number given by Singapore Government e.g. "234323213X". Refer: [What is Unique Entity Number (UEN) in Singapore](https://sleek.com/sg/resources/what-is-uen-in-singapore/)
+- Backend apis are deployed on different infrastructure and due to limitations of free tier of [Render](https://render.com/), it is recommended to open api spec/swagger first to avoid cold start issues. Usually takes 1-2 mins.
+- (Backend swagger link)[https://credilinq-backend.onrender.com/api]
+- Lighthouse Reports
 
 ## Live Link
 https://sme-healthcheck.vercel.app/
