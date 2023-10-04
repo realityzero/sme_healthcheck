@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and uses [shadcn/ui components](https://ui.shadcn.com/)
 
 ## Notes from Author
 - SME Healthcheck frontend is deployed using Vercel. It doesn't require a ```dockerfile``` to ship it.
